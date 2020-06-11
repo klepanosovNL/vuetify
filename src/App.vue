@@ -26,7 +26,9 @@
         @click="drawer = !drawer"
         class="hidden-md-and-up"
       ></v-toolbar-side-icon>
-      <v-toolbar-title>Ad application</v-toolbar-title>
+      <v-toolbar-title>
+        <router-link to="/" tag="span" class="pointer">Ad application</router-link>
+        </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-sm-and-down">
         <v-btn
@@ -40,8 +42,6 @@
         </v-btn>
       </v-toolbar-items>
     </v-toolbar>
-
-
     <v-content>
       <router-view></router-view>
     </v-content>
@@ -54,6 +54,7 @@ export default {
     return {
       drawer: false,
       links: [
+        {title: 'Home', icon: 'home', url: '/'},
         {title: 'Login', icon: 'lock', url: '/login'},
         {title: 'Registration', icon: 'face', url: '/registration'},
         {title: 'Orders', icon: 'bookmark_border', url: '/orders'},
@@ -64,3 +65,8 @@ export default {
   }
 }
 </script>
+<style>
+  .pointer {
+    cursor: pointer;
+  }
+</style>
