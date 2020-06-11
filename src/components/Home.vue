@@ -56,7 +56,7 @@
 
 <script>
   export default {
-    data() {
+    data () {
       return {
         ads: [
           {
@@ -92,7 +92,7 @@
     bottom: 50px;
     left: 50%;
     transform: translateX(-50%);
-    padding: 5px 10px;
+    padding: 5px;
 
     border-radius: 5px 5px 0 0;
     background: rgba(0, 0, 0, .5);
