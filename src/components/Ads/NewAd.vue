@@ -62,7 +62,7 @@
 
 <script>
   export default {
-    data() {
+    data () {
       return {
         title: '',
         description: '',
@@ -71,13 +71,15 @@
       }
     },
     methods: {
-      createAd() {
+      createAd () {
         if (this.$refs.form.validate()) {
           const ad = {
             title: this.title,
             description: this.description,
             promo: this.promo
           }
+
+          console.log(ad)
         }
       }
     }

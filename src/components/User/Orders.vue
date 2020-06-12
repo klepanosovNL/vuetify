@@ -49,7 +49,7 @@
       }
     },
     methods: {
-      markDone(order) {
+      markDone (order) {
         order.done = true
       }
     }
