@@ -32,11 +32,6 @@
         </v-layout>
         <v-layout>
           <v-flex>
-            <img src="https://v1.vuetifyjs.com/static/doc-images/carousel/planet.jpg" height="100">
-          </v-flex>
-        </v-layout>
-        <v-layout>
-          <v-flex>
             <v-switch
               label="Ad to promp?"
               v-model="promo"
@@ -76,10 +71,11 @@
           const ad = {
             title: this.title,
             description: this.description,
-            promo: this.promo
+            promo: this.promo,
+            imageSrc: 'https://lh3.googleusercontent.com/proxy/cIDITKFk_88Rtp-tvbeI0S6EUlqCmjs_vuZtKXvwHE7i64tIsOUM86mMyg_XoUAZMFzZMiAQaw-oYv2oRgvnWYof_8-RvJq_hE-NegbDxzyESgSd-JbaWaTOlo7iNKFVsay0r4c'
           }
 
-          console.log(ad)
+          this.$store.dispatch('createAd', ad)
         }
       }
     }
