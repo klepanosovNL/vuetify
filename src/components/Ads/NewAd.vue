@@ -32,7 +32,7 @@
         </v-layout>
         <v-layout>
           <v-flex>
-            <img src="" height="100">
+            <img src="https://v1.vuetifyjs.com/static/doc-images/carousel/planet.jpg" height="100">
           </v-flex>
         </v-layout>
         <v-layout>
