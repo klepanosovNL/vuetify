@@ -35,7 +35,7 @@
 
 <script>
   export default {
-    data() {
+    data () {
       return {
         orders: [
           {
@@ -50,7 +50,7 @@
     },
     methods: {
       markDone(order) {
-        order.done = true;
+        order.done = true
       }
     }
   }
