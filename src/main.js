@@ -34,5 +34,6 @@ new Vue({
       }
     })
     // firebase.analytics();
+    this.$store.dispatch('fetchAds')
   }
 })
