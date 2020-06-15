@@ -28,6 +28,11 @@ new Vue({
       appId: '1:1051507405564:web:bbe3985d5cd0bf010b9d79',
       measurementId: 'G-SRF6B1ZL8V'
     })
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        this.$store.dispatch('autoLoginUser', user)
+      }
+    })
     // firebase.analytics();
   }
 })
