@@ -1,12 +1,7 @@
-import * as firebase from "firebase"
+import * as fb from 'firebase'
 
 class Ad {
-  constructor (title,
-               description,
-               promo = false,
-               ownerId,
-               imageSrc = '',
-               id = null) {
+  constructor (title, description, ownerId, imageSrc = '', promo = false, id = null) {
     this.title = title
     this.description = description
     this.ownerId = ownerId
@@ -18,29 +13,7 @@ class Ad {
 
 export default {
   state: {
-    ads: [
-      // {
-      //   title: 'First ad',
-      //   description: 'description',
-      //   promo: false,
-      //   imageSrc: 'https://v1.vuetifyjs.com/static/doc-images/carousel/planet.jpg',
-      //   id: '1'
-      // },
-      // {
-      //   title: 'Second ad',
-      //   description: 'description',
-      //   promo: true,
-      //   imageSrc: 'https://v1.vuetifyjs.com/static/doc-images/carousel/bird.jpg',
-      //   id: '2'
-      // },
-      // {
-      //   title: 'Third ad',
-      //   description: 'description',
-      //   promo: true,
-      //   imageSrc: 'https://v1.vuetifyjs.com/static/doc-images/carousel/sky.jpg',
-      //   id: '3'
-      // }
-    ]
+    ads: []
   },
   mutations: {
     createAd (state, payload) {
@@ -55,20 +28,30 @@ export default {
       commit('clearError')
       commit('setLoading', true)
 
+      const image = payload.image
+
       try {
-        const newAd = new Ad (
+        const newAd = new Ad(
           payload.title,
           payload.description,
           getters.user.id,
-          payload.imageSrc,
+          '',
           payload.promo
         )
 
-        const ad = await firebase.database().ref('ads').push(newAd)
+        const ad = await fb.database().ref('ads').push(newAd)
+        const imageExt = image.name.slice(image.name.lastIndexOf('.'))
+        const fileData = await fb.storage().ref(`ads/${ad.key}.${imageExt}`).put(image)
+        const imageSrc = await fileData.ref.getDownloadURL().then(value => value)
+        await fb.database().ref('ads').child(ad.key).update({
+          imageSrc
+        })
+
         commit('setLoading', false)
         commit('createAd', {
           ...newAd,
-          id: ad.key
+          id: ad.key,
+          imageSrc
         })
       } catch (error) {
         commit('setError', error.message)
@@ -83,7 +66,7 @@ export default {
       const resultAds = []
 
       try {
-        const fbVal = await firebase.database().ref('ads').once('value')
+        const fbVal = await fb.database().ref('ads').once('value')
         const ads = fbVal.val()
 
         Object.keys(ads).forEach(key => {
@@ -93,8 +76,8 @@ export default {
           )
         })
 
+        commit('loadAds', resultAds)
         commit('setLoading', false)
-
       } catch (error) {
         commit('setError', error.message)
         commit('setLoading', false)
