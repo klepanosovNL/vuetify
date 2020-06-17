@@ -1,4 +1,4 @@
-import * as fb from 'firebase'
+import * as firebase from 'firebase'
 
 class Ad {
   constructor (title, description, ownerId, imageSrc = '', promo = false, id = null) {
@@ -21,6 +21,14 @@ export default {
     },
     loadAds (state, payload) {
       state.ads = payload
+    },
+    updateAd (state, {title, description, id}) {
+      const ad = state.ads.find(a => {
+        return a.id === id
+      })
+
+      ad.title = title
+      ad.description = description
     }
   },
   actions: {
@@ -39,11 +47,11 @@ export default {
           payload.promo
         )
 
-        const ad = await fb.database().ref('ads').push(newAd)
+        const ad = await firebase.database().ref('ads').push(newAd)
         const imageExt = image.name.slice(image.name.lastIndexOf('.'))
-        const fileData = await fb.storage().ref(`ads/${ad.key}.${imageExt}`).put(image)
+        const fileData = await firebase.storage().ref(`ads/${ad.key}.${imageExt}`).put(image)
         const imageSrc = await fileData.ref.getDownloadURL().then(value => value)
-        await fb.database().ref('ads').child(ad.key).update({
+        await firebase.database().ref('ads').child(ad.key).update({
           imageSrc
         })
 
@@ -66,7 +74,7 @@ export default {
       const resultAds = []
 
       try {
-        const fbVal = await fb.database().ref('ads').once('value')
+        const fbVal = await firebase.database().ref('ads').once('value')
         const ads = fbVal.val()
 
         Object.keys(ads).forEach(key => {
@@ -83,11 +91,30 @@ export default {
         commit('setLoading', false)
         throw error
       }
+    },
+    async updateAd ({commit}, {title, description, id}) {
+      commit('clearError')
+      commit('setLoading', true)
+
+      try {
+        await firebase.database().ref('ads').child(id).update({
+          title, description
+        })
+        commit('updateAd', {
+          title, description, id
+        })
+        commit('setLoading', false)
+      } catch (error) {
+        commit('setError', false)
+        commit('setLoading', false)
+      }
     }
   },
   getters: {
-    ads (state) {
-      return state.ads
+    ads (state, getters) {
+      return state.ads.filter(ad => {
+        return ad.ownerId === getters.user.id
+      })
     },
     promoAds (state) {
       return state.ads.filter(ad => {
