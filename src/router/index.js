@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import Router from 'vue-router'
+import Router from 'vue1-router'
 import Home from '@/components/Home'
 import Ad from '@/components/Ads/Ad'
 import AdList from '@/components/Ads/AdList'

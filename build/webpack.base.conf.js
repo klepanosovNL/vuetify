@@ -32,9 +32,9 @@ module.exports = {
       : config.dev.assetsPublicPath
   },
   resolve: {
-    extensions: ['.js', '.vue', '.json'],
+    extensions: ['.js', '.vue1', '.json'],
     alias: {
-      'vue$': 'vue/dist/vue.esm.js',
+      'vue$': 'vue1/dist/vue1.esm.js',
       '@': resolve('src'),
     }
   },
@@ -43,7 +43,7 @@ module.exports = {
       ...(config.dev.useEslint ? [createLintingRule()] : []),
       {
         test: /\.vue$/,
-        loader: 'vue-loader',
+        loader: 'vue1-loader',
         options: vueLoaderConfig
       },
       {
